@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DataMask – Privacy Policy</title>
+  <style>
+    :root{
+      --fg:#0f172a; --muted:#475569; --border:#e2e8f0; --bg:#ffffff; --accent:#0a84ff;
+      --card:#fff; --max:860px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font:16px/1.55 ui-sans-serif,-apple-system,system-ui,"Segoe UI",Roboto,Arial,sans-serif}
+    main{max-width:var(--max);margin:48px auto;padding:0 20px}
+    h1{font-size:28px;margin:0 0 14px;font-weight:800;letter-spacing:-.01em}
+    h2{font-size:20px;margin:28px 0 10px;font-weight:700}
+    p{margin:10px 0;color:var(--fg)}
+    .muted{color:var(--muted)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 18px 8px;margin:16px 0}
+    code{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:2px 6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:90%}
+    ul{padding-left:18px;margin:10px 0}
+    a{color:var(--accent);text-decoration:none}
+    small{color:var(--muted)}
+  </style>
+</head>
+<body>
+<main>
+  <h1>DataMask – Privacy Policy</h1>
+  <p class="muted"><strong>Last updated:</strong> 2025-08-19</p>
+
+  <div class="card">
+    <p><strong>DataMask</strong> is a Chrome extension that lets you anonymize chosen words/phrases on any webpage and copy a sanitized version for use in AI tools. It is designed to be private by default.</p>
+  </div>
+
+  <h2>What data we collect</h2>
+  <p><strong>We do not collect, transmit, or sell any personal data.</strong> The extension does not make network requests to our servers or to third parties.</p>
+
+  <h2>How the extension works</h2>
+  <ul>
+    <li><strong>On-device processing:</strong> Replacements are applied in your browser when you click a button. Processing happens in memory only.</li>
+    <li><strong>Local rules:</strong> Your dictionary (patterns + replacements) is stored in <code>chrome.storage.local</code> on your device.</li>
+    <li><strong>Clipboard:</strong> When you click “Anonymize &amp; Copy…”, the extension writes the sanitized text to your clipboard.</li>
+    <li><strong>No page content leaves your device:</strong> We do not upload, log, or analyze page content.</li>
+  </ul>
+
+  <h2>Permissions we request & why</h2>
+  <ul>
+    <li><code>activeTab</code> – access the current tab <em>only</em> when you click a copy action, to read visible text.</li>
+    <li><code>scripting</code> – run a small, declared script to generate sanitized text.</li>
+    <li><code>storage</code> – save your local dictionary of rules.</li>
+    <li><code>clipboardWrite</code> – place the anonymized text on your clipboard after you request it.</li>
+    <li><code>contextMenus</code> – optional right-click actions for copying.</li>
+  </ul>
+
+  <h2>What we do <em>not</em> do</h2>
+  <ul>
+    <li>No analytics, ads, tracking pixels, or telemetry.</li>
+    <li>No external scripts, no remote code, no CDN dependencies.</li>
+    <li>No cookies, and we do not access your passwords or browsing history.</li>
+  </ul>
+
+  <h2>Your controls</h2>
+  <ul>
+    <li>Edit or delete rules at any time in the popup.</li>
+    <li>Removing the extension deletes its local data from your browser.</li>
+  </ul>
+
+  <h2>Third-party websites</h2>
+  <p>DataMask manipulates text already rendered by sites you visit, but it does not control those sites. Their own privacy policies apply when you use them.</p>
+
+  <h2>Children’s privacy</h2>
+  <p>DataMask is a general-utility tool and does not target children. We do not knowingly collect any personal information.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If we change how the extension handles data (for example, adding paid features that require a license check), we will update this page and the extension description before release.</p>
+
+
+  <p><small>DataMask runs entirely in your browser. If you believe the extension is behaving otherwise, please report it immediately.</small></p>
+</main>
+</body>
+</html>
