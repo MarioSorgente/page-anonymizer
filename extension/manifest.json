@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Page Anonymizer — Privacy Copy",
-  "version": "0.4.1",
-  "description": "Anonymize selected words on any page and copy a sanitized version to your AI tool.",
+  "name": "DataMask — safely anonymize your text before copying to AI tools",
+  "version": "0.6.3",
+  "description": "Anonymize selected words on any page and copy a sanitized version to your AI tool. All processing is local.",
   "action": {
-    "default_title": "Page Anonymizer",
+    "default_title": "DataMask",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/16.png",
