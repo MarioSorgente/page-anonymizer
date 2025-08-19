@@ -94,11 +94,13 @@ async function anonymizeAndCopy(selectionOnly) {
     func: (rulesArg, selectionOnlyArg) => {
       function escapeRegExp(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
       function buildRegex(rule) {
-        const base = rule.isRegex ? rule.pattern : escapeRegExp(rule.pattern);
+        function escapeRegExp(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+        const base = escapeRegExp(rule.pattern);
         const wrapped = rule.wholeWord ? '\\b(?:' + base + ')\\b' : base;
         const flags = rule.caseSensitive ? 'g' : 'gi';
         return new RegExp(wrapped, flags);
-      }
+        }    
+
       function applyAll(text, list) {
         let out = text;
         const sorted = (list || []).slice().sort((a, b) => (b.pattern||'').length - (a.pattern||'').length);
