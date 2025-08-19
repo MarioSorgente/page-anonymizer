@@ -48,7 +48,7 @@ form input {
   font-size: 13px;
 }
 
-/* --- CHIP CHECKBOXES (smaller controls, one-line labels) --- */
+/* --- CHIP CHECKBOXES (smaller, one-line, centered tick) --- */
 .row.small.toggles {
   display: flex;
   justify-content: center;
@@ -62,7 +62,7 @@ label.chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;            /* tighter */
+  padding: 6px 10px;            /* compact */
   border: 1px solid var(--chip-border);
   border-radius: 999px;
   background: var(--chip-bg);
@@ -71,18 +71,18 @@ label.chip {
   letter-spacing: -0.01em;
   color: #0f172a;
   transition: border-color .2s ease, background .2s ease;
-  white-space: nowrap;          /* keep on one line */
+  white-space: nowrap;
 }
 label.chip:hover { border-color: #d1d5db; }
 
-/* custom checkbox (smaller) */
+/* smaller checkbox square */
 label.chip input {
   appearance: none;
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 12px;                 /* smaller */
+  height: 12px;
   border: 2px solid var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
   background: #fff;
   display: inline-block;
   position: relative;
@@ -92,20 +92,21 @@ label.chip input:checked {
   background: var(--accent);
   border-color: var(--accent);
 }
+/* centered tick */
 label.chip input:checked::after {
   content: "";
   position: absolute;
-  left: 3px;
-  top: 0px;
-  width: 3px;
-  height: 7px;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 3px;
   border: 2px solid #fff;
   border-top: 0;
-  border-left: 0;
-  transform: rotate(45deg);
+  border-right: 0;
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-/* highlight pill when checked (Chrome supports :has) */
+/* pill highlight when checked */
 label.chip:has(input:checked) {
   background: #eef5ff;
   border-color: var(--accent);
