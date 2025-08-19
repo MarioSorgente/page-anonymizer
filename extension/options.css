@@ -1,0 +1,13 @@
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; padding: 16px; }
+header { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+h1 { font-size: 18px; margin: 0; }
+form { display: grid; grid-template-columns: 1fr 1fr auto auto auto auto; gap: 8px; margin-bottom: 12px; }
+form input[type="text"], form input:not([type]) { padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+form button { padding: 8px 10px; border-radius: 8px; border: 1px solid #ddd; background: #fff; cursor: pointer; }
+#rulesTable { width: 100%; border-collapse: collapse; }
+#rulesTable th, #rulesTable td { border-bottom: 1px solid #eee; text-align: left; padding: 8px; font-size: 14px; }
+#rulesTable td .pill { background:#f2f2f2; border-radius: 999px; padding:2px 8px; margin-right:6px; font-size:12px; }
+.io { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.import { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.import input { display: none; }
+.note { color: #666; font-size: 12px; margin-left: auto; }
