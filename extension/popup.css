@@ -52,9 +52,8 @@ form input {
 .primary:hover { background: var(--accent-press); border-color: var(--accent-press); }
 button { cursor: pointer; }
 
-.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.actions .primary { grid-column: span 2; }
-.link { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--accent); text-decoration: none; }
+.actions.one { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 10px; }
+.link { display: inline-block; font-size: 12px; color: var(--accent); text-decoration: none; }
 
 #rulesList { list-style: none; margin: 0; padding: 0; max-height: 160px; overflow: auto; }
 .rule {
