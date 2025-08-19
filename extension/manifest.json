@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Page Anonymizer — Privacy Copy",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "Anonymize selected words on any page and copy a sanitized version to your AI tool.",
   "action": {
     "default_title": "Page Anonymizer",
@@ -29,7 +29,6 @@
   "background": {
     "service_worker": "sw.js"
   },
-  "options_page": "options.html",
   "commands": {
     "copy-page": {
       "suggested_key": { "default": "Ctrl+Shift+U" },
