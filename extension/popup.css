@@ -3,14 +3,22 @@
   --fg: #111111;
   --muted: #6b7280;
   --border: #e5e7eb;
+
   --accent: #0a84ff;
   --accent-press: #0067d8;
+
+  --success: #10b981;       /* green */
+  --success-press: #059669; /* darker green */
+
   --radius: 14px;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-body { font-family: ui-sans-serif, -apple-system, system-ui, "SF Pro Text", "Segoe UI", Roboto, Arial, sans-serif; background: var(--bg); color: var(--fg); }
+body {
+  font-family: ui-sans-serif, -apple-system, system-ui, "SF Pro Text", "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg); color: var(--fg);
+}
 main { width: 360px; padding: 16px; }
 
 header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
@@ -24,7 +32,6 @@ h1 { font-size: 16px; font-weight: 700; margin: 0; letter-spacing: -.01em; }
   margin-bottom: 12px;
   background: #fff;
 }
-
 h2 { font-size: 13px; margin: 0 0 8px 0; font-weight: 600; }
 
 form { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -39,22 +46,23 @@ form input {
 .row.small { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .row.small label { font-size: 12px; color: #222; }
 
-.primary {
+.btn {
   appearance: none;
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: #fff;
-  padding: 10px 12px;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  padding: 12px 14px;
+  width: 100%;
+  border: 1px solid transparent;
+  color: #fff;
 }
-.primary:hover { background: var(--accent-press); border-color: var(--accent-press); }
-button { cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent-press); border-color: var(--accent-press); }
 
-.actions.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-.actions.two .primary { grid-column: span 2; }
-.link { display: inline-block; font-size: 12px; color: var(--accent); text-decoration: none; }
+.btn.success { background: var(--success); border-color: var(--success); }
+.btn.success:hover { background: var(--success-press); border-color: var(--success-press); }
+
+.actions { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
 
 #rulesList { list-style: none; margin: 0; padding: 0; max-height: 160px; overflow: auto; }
 .rule {
@@ -65,9 +73,8 @@ button { cursor: pointer; }
 .rule code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
 .pills { display: flex; gap: 6px; }
 .pill { background: #f1f5f9; color: #0f172a; padding: 2px 8px; border-radius: 999px; font-size: 11px; }
-.delete { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 6px 10px; font-weight: 600; }
+.delete { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 6px 10px; font-weight: 600; cursor: pointer; }
 .delete:hover { background: #f8fafc; }
 
 .empty { font-size: 12px; color: var(--muted); }
-
 #status { margin-top: 8px; font-size: 12px; color: var(--muted); min-height: 16px; }
