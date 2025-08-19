@@ -7,11 +7,12 @@
   --accent: #0a84ff;
   --accent-press: #0067d8;
 
-  --success: #10b981;       /* green */
-  --success-press: #059669; /* darker green */
+  --success: #10b981;
+  --success-press: #059669;
 
-  --secondary: #6b7280;       /* gray for Add */
-  --secondary-press: #4b5563;
+  /* lighter gray for Add */
+  --secondary: #9ca3af;       /* gray-400 */
+  --secondary-press: #6b7280; /* gray-500 */
 
   --radius: 14px;
 }
@@ -47,11 +48,11 @@ form input {
   font-size: 13px;
 }
 
-/* --- CHIP CHECKBOXES --- */
+/* --- CHIP CHECKBOXES (smaller controls, one-line labels) --- */
 .row.small.toggles {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   margin: 4px 0 2px;
 }
@@ -60,8 +61,8 @@ label.chip {
   --chip-border: var(--border);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 6px;
+  padding: 6px 10px;            /* tighter */
   border: 1px solid var(--chip-border);
   border-radius: 999px;
   background: var(--chip-bg);
@@ -70,17 +71,18 @@ label.chip {
   letter-spacing: -0.01em;
   color: #0f172a;
   transition: border-color .2s ease, background .2s ease;
+  white-space: nowrap;          /* keep on one line */
 }
 label.chip:hover { border-color: #d1d5db; }
 
-/* custom checkbox */
+/* custom checkbox (smaller) */
 label.chip input {
   appearance: none;
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border: 2px solid var(--border);
-  border-radius: 5px;
+  border-radius: 4px;
   background: #fff;
   display: inline-block;
   position: relative;
@@ -93,17 +95,17 @@ label.chip input:checked {
 label.chip input:checked::after {
   content: "";
   position: absolute;
-  left: 5px;
-  top: 1.5px;
-  width: 4px;
-  height: 8px;
+  left: 3px;
+  top: 0px;
+  width: 3px;
+  height: 7px;
   border: 2px solid #fff;
   border-top: 0;
   border-left: 0;
   transform: rotate(45deg);
 }
 
-/* highlight the pill when checked (supported in modern Chrome) */
+/* highlight pill when checked (Chrome supports :has) */
 label.chip:has(input:checked) {
   background: #eef5ff;
   border-color: var(--accent);
@@ -135,7 +137,7 @@ label.chip:has(input:checked) {
 .btn.success:hover { background: var(--success-press); border-color: var(--success-press); }
 .btn.success:active { transform: translateY(1px); }
 
-/* Gray Add button (flat) */
+/* Lighter gray Add button (flat) */
 .btn.add { background: var(--secondary); border-color: var(--secondary); }
 .btn.add:hover { background: var(--secondary-press); border-color: var(--secondary-press); }
 .btn.add:active { transform: translateY(1px); }
