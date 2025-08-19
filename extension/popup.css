@@ -46,10 +46,70 @@ form input {
   background: #fff;
   font-size: 13px;
 }
-.row.small { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-.row.small label { font-size: 12px; color: #222; }
 
-/* Base button */
+/* --- CHIP CHECKBOXES --- */
+.row.small.toggles {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+  margin: 4px 0 2px;
+}
+label.chip {
+  --chip-bg: #fff;
+  --chip-border: var(--border);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--chip-border);
+  border-radius: 999px;
+  background: var(--chip-bg);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+  transition: border-color .2s ease, background .2s ease;
+}
+label.chip:hover { border-color: #d1d5db; }
+
+/* custom checkbox */
+label.chip input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  background: #fff;
+  display: inline-block;
+  position: relative;
+  transition: border-color .2s ease, background .2s ease;
+}
+label.chip input:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+label.chip input:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1.5px;
+  width: 4px;
+  height: 8px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-left: 0;
+  transform: rotate(45deg);
+}
+
+/* highlight the pill when checked (supported in modern Chrome) */
+label.chip:has(input:checked) {
+  background: #eef5ff;
+  border-color: var(--accent);
+}
+
+/* --- BUTTONS --- */
 .btn {
   appearance: none;
   border-radius: 12px;
