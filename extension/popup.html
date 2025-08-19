@@ -10,22 +10,17 @@
   <main>
     <header>
       <h1>Page Anonymizer</h1>
-      <label class="switch">
-        <input type="checkbox" id="toggle" />
-        <span class="slider"></span>
-      </label>
     </header>
-    <p class="hint">Enable for this site, then insert words to anonymize.</p>
+    <p class="hint">Insert words to anonymize, then copy.</p>
 
     <section class="card">
       <h2>Insert words to anonymize</h2>
       <form id="addForm">
-        <input id="pattern" placeholder="Pattern (e.g. 4000eur or ^INV-\\d+)" required />
+        <input id="pattern" placeholder="Pattern (e.g. 4000eur)" required />
         <input id="replacement" placeholder="Replacement (e.g. amount in eur)" required />
         <div class="row small">
           <label><input type="checkbox" id="wholeWord" checked /> Whole word</label>
           <label><input type="checkbox" id="caseSensitive" /> Case sensitive</label>
-          <label><input type="checkbox" id="isRegex" /> Regex</label>
         </div>
         <button type="submit" class="primary">Add rule</button>
       </form>
@@ -37,8 +32,9 @@
       <ul id="rulesList"></ul>
     </section>
 
-    <section class="actions one">
+    <section class="actions two">
       <button id="copyPage" class="primary">Anonymize & Copy Page</button>
+      <button id="copySel">Anonymize & Copy Selection</button>
       <a id="openOptions" href="#" class="link">Open full settings</a>
     </section>
 
