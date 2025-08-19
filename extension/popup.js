@@ -1,5 +1,4 @@
-// ===== Page Anonymizer — Popup (v0.5.0) =====
-// No options page, no regex. Two buttons: Page (blue) and Selection (green).
+// ===== Page Anonymizer — Popup (v0.6.0, unique rules + prettier Add) =====
 
 const el = (id) => document.getElementById(id);
 const $status = el('status');
@@ -8,7 +7,7 @@ const $empty = el('emptyRules');
 
 function setStatus(msg) {
   $status.textContent = msg || '';
-  if (msg) setTimeout(() => { $status.textContent = ''; }, 1500);
+  if (msg) setTimeout(() => { $status.textContent = ''; }, 1800);
 }
 function pill(text) { return `<span class="pill">${text}</span>`; }
 function esc(s='') { return s.replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -52,6 +51,12 @@ async function loadRules() {
   }
 }
 
+// Unique-by-pattern (case-insensitive)
+function hasPattern(rules, pattern) {
+  const key = String(pattern).trim().toLowerCase();
+  return (rules || []).some(r => String(r.pattern || '').trim().toLowerCase() === key);
+}
+
 async function addRule(e) {
   e.preventDefault();
   const pattern = el('pattern').value.trim();
@@ -62,6 +67,15 @@ async function addRule(e) {
 
   const data = await chrome.storage.local.get({ rules: [] });
   const rules = data.rules || [];
+
+  if (hasPattern(rules, pattern)) {
+    setStatus(`Rule exists: “${pattern}”. Delete it to change.`);
+    // Brief visual feedback on the Add button
+    const btn = e.target.querySelector('.btn.add');
+    if (btn) { btn.style.shake = '1'; btn.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-3px)' }, { transform: 'translateX(3px)' }, { transform: 'translateX(0)' }], { duration: 180, iterations: 1 }); }
+    return;
+  }
+
   rules.push({ pattern, replacement, wholeWord, caseSensitive });
   await chrome.storage.local.set({ rules });
 
@@ -71,7 +85,7 @@ async function addRule(e) {
   setStatus('Rule added.');
 }
 
-// Build the function that runs in the page to produce sanitized text
+// Function executed in the page to sanitize text
 function pageFuncFactory() {
   return (rulesArg, selectionOnlyArg) => {
     function escapeRegExp(str) { return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
@@ -124,8 +138,8 @@ async function copySanitized(selectionOnly) {
 
 // Events
 el('addForm').addEventListener('submit', addRule);
-el('copyPage').addEventListener('click', () => copySanitized(false));
-el('copySel').addEventListener('click', () => copySanitized(true));
+document.getElementById('copyPage').addEventListener('click', () => copySanitized(false));
+document.getElementById('copySel').addEventListener('click', () => copySanitized(true));
 
 // Init
 loadRules();
