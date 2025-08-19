@@ -1,43 +1,37 @@
 {
-"manifest_version": 3,
-"name": "Page Anonymizer",
-"version": "0.1.0",
-"description": "Anonymize selected terms on any page and copy a sanitized version for AI tools.",
-"action": {
-"default_title": "Page Anonymizer",
-"default_popup": "popup.html"
-},
-"permissions": [
-"storage",
-"scripting",
-"activeTab",
-"clipboardWrite",
-"contextMenus"
-],
-"optional_host_permissions": [
-"<all_urls>"
-],
-"background": {
-"service_worker": "sw.js"
-},
-"options_page": "options.html",
-"icons": {
-"16": "icons/16.png",
-"32": "icons/32.png",
-"48": "icons/48.png",
-"128": "icons/128.png"
-},
-"commands": {
-"toggle-site": {
-"suggested_key": { "default": "Ctrl+Shift+Y" },
-"description": "Toggle anonymizer on this site"
-},
-"copy-page": {
-"suggested_key": { "default": "Ctrl+Shift+U" },
-"description": "Anonymize & Copy page text"
-}
-},
-"content_security_policy": {
-"extension_pages": "script-src 'self'; object-src 'none'"
-}
+  "manifest_version": 3,
+  "name": "Page Anonymizer — Privacy Copy",
+  "version": "0.2.0",
+  "description": "Anonymize selected words on any page and copy a sanitized version to your AI tool.",
+  "action": {
+    "default_title": "Page Anonymizer",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab",
+    "clipboardWrite",
+    "contextMenus"
+  ],
+  "optional_host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "sw.js"
+  },
+  "options_page": "options.html",
+  "commands": {
+    "toggle-site": {
+      "suggested_key": { "default": "Ctrl+Shift+Y" },
+      "description": "Toggle anonymizer on this site"
+    },
+    "copy-page": {
+      "suggested_key": { "default": "Ctrl+Shift+U" },
+      "description": "Anonymize & Copy page text"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'"
+  }
 }
