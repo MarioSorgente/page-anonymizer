@@ -18,9 +18,15 @@
       <form id="addForm">
         <input id="pattern" placeholder="Pattern (e.g. 4000eur)" required />
         <input id="replacement" placeholder="Replacement (e.g. amount in eur)" required />
-        <div class="row small">
-          <label><input type="checkbox" id="wholeWord" checked /> Whole word</label>
-          <label><input type="checkbox" id="caseSensitive" /> Case sensitive</label>
+        <div class="row small toggles">
+          <label class="chip">
+            <input type="checkbox" id="wholeWord" checked />
+            <span>Whole word</span>
+          </label>
+          <label class="chip">
+            <input type="checkbox" id="caseSensitive" />
+            <span>Case sensitive</span>
+          </label>
         </div>
         <button type="submit" class="btn add">Add rule</button>
       </form>
