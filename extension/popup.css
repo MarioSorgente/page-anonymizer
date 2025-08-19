@@ -75,13 +75,13 @@ label.chip {
 }
 label.chip:hover { border-color: #d1d5db; }
 
-/* smaller checkbox square */
+/* smaller checkbox square (reduced from 12px → 10px, thinner stroke) */
 label.chip input {
   appearance: none;
   -webkit-appearance: none;
-  width: 12px;                 /* smaller */
-  height: 12px;
-  border: 2px solid var(--border);
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--border);
   border-radius: 3px;
   background: #fff;
   display: inline-block;
@@ -92,18 +92,18 @@ label.chip input:checked {
   background: var(--accent);
   border-color: var(--accent);
 }
-/* centered tick */
+/* centered, slimmer tick */
 label.chip input:checked::after {
   content: "";
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 6px;
-  height: 3px;
-  border: 2px solid #fff;
+  width: 5px;                  /* smaller tick */
+  height: 2px;
+  border: 1.5px solid #fff;
   border-top: 0;
   border-right: 0;
-  transform: translate(-50%, -50%) rotate(-45deg);
+  transform: translate(-50%, -55%) rotate(-45deg);
 }
 
 /* pill highlight when checked */
