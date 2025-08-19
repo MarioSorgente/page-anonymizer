@@ -10,9 +10,8 @@
   --success: #10b981;
   --success-press: #059669;
 
-  /* lighter gray for Add */
-  --secondary: #9ca3af;       /* gray-400 */
-  --secondary-press: #6b7280; /* gray-500 */
+  --secondary: #9ca3af;       /* gray for Add */
+  --secondary-press: #6b7280;
 
   --radius: 14px;
 }
@@ -48,7 +47,7 @@ form input {
   font-size: 13px;
 }
 
-/* --- CHIP CHECKBOXES (smaller, one-line, centered tick) --- */
+/* --- CHIP CHECKBOXES (ultra-simple) --- */
 .row.small.toggles {
   display: flex;
   justify-content: center;
@@ -62,7 +61,7 @@ label.chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 10px;            /* compact */
+  padding: 6px 10px;
   border: 1px solid var(--chip-border);
   border-radius: 999px;
   background: var(--chip-bg);
@@ -75,40 +74,41 @@ label.chip {
 }
 label.chip:hover { border-color: #d1d5db; }
 
-/* smaller checkbox square (reduced from 12px → 10px, thinner stroke) */
+/* SMALL square + full, centered tick */
 label.chip input {
   appearance: none;
   -webkit-appearance: none;
-  width: 10px;
+  width: 10px;                 /* small square */
   height: 10px;
   border: 1.5px solid var(--border);
   border-radius: 3px;
   background: #fff;
   display: inline-block;
   position: relative;
+  vertical-align: middle;
   transition: border-color .2s ease, background .2s ease;
 }
 label.chip input:checked {
   background: var(--accent);
   border-color: var(--accent);
 }
-/* centered, slimmer tick */
+/* simple ✓ that fills the square nicely */
 label.chip input:checked::after {
   content: "";
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 6px;                  /* check width  */
-  height: 3px;                 /* check height */
-  margin-left: -3px;           /* center horizontally */
-  margin-top: -1.5px;          /* center vertically   */
-  border-left: 2px solid #fff; /* simple ✓ made of two strokes */
+  width: 8px;                 /* fills most of the 10px box */
+  height: 5px;
+  margin-left: -4px;          /* center horizontally */
+  margin-top: -2.5px;         /* center vertically   */
+  border-left: 2px solid #fff;
   border-bottom: 2px solid #fff;
   transform: rotate(-45deg);
   box-sizing: border-box;
 }
 
-/* pill highlight when checked */
+/* optional subtle highlight on the pill when checked */
 label.chip:has(input:checked) {
   background: #eef5ff;
   border-color: var(--accent);
@@ -140,7 +140,7 @@ label.chip:has(input:checked) {
 .btn.success:hover { background: var(--success-press); border-color: var(--success-press); }
 .btn.success:active { transform: translateY(1px); }
 
-/* Lighter gray Add button (flat) */
+/* Gray Add (flat) */
 .btn.add { background: var(--secondary); border-color: var(--secondary); }
 .btn.add:hover { background: var(--secondary-press); border-color: var(--secondary-press); }
 .btn.add:active { transform: translateY(1px); }
