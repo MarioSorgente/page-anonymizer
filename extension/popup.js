@@ -1,4 +1,6 @@
-// ===== Page Anonymizer — Popup (v0.4.0) =====
+// ===== Page Anonymizer — Popup (v0.5.0) =====
+// No options page, no regex. Two buttons: Page (blue) and Selection (green).
+
 const el = (id) => document.getElementById(id);
 const $status = el('status');
 const $list = el('rulesList');
@@ -10,6 +12,7 @@ function setStatus(msg) {
 }
 function pill(text) { return `<span class="pill">${text}</span>`; }
 function esc(s='') { return s.replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
 async function activeTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab || null;
@@ -68,18 +71,18 @@ async function addRule(e) {
   setStatus('Rule added.');
 }
 
-function buildPageScript({ selectionOnly }) {
+// Build the function that runs in the page to produce sanitized text
+function pageFuncFactory() {
   return (rulesArg, selectionOnlyArg) => {
-    function escapeRegExp(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    function escapeRegExp(str) { return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
     function buildRegex(rule) {
-      // Regex removed: always escape the pattern
-      const base = escapeRegExp(rule.pattern);
+      const base = escapeRegExp(rule.pattern || '');
       const wrapped = rule.wholeWord ? '\\b(?:' + base + ')\\b' : base;
       const flags = rule.caseSensitive ? 'g' : 'gi';
       return new RegExp(wrapped, flags);
     }
     function applyAll(text, list) {
-      let out = text;
+      let out = text || '';
       const sorted = (list || []).slice().sort((a, b) => (b.pattern||'').length - (a.pattern||'').length);
       for (const r of sorted) {
         if (!r || !r.pattern) continue;
@@ -88,27 +91,22 @@ function buildPageScript({ selectionOnly }) {
       return out;
     }
     const sel = (window.getSelection && window.getSelection().toString()) || '';
-    const baseText = selectionOnlyArg ? sel : (document.body ? (document.body.innerText || '') : '');
-    return applyAll(baseText, rulesArg || []);
+    const src = selectionOnlyArg ? sel : (document.body ? (document.body.innerText || '') : '');
+    return applyAll(src, rulesArg || []);
   };
 }
 
-async function copySanitized({ selectionOnly }) {
+async function copySanitized(selectionOnly) {
   const { rules } = await chrome.storage.local.get({ rules: [] });
   const tab = await activeTab();
   if (!tab) return;
-
   const results = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: buildPageScript({ selectionOnly }),
+    func: pageFuncFactory(),
     args: [Array.isArray(rules) ? rules : [], !!selectionOnly]
   });
-
   const sanitized = (results && results[0] && results[0].result) || '';
-  if (selectionOnly && !sanitized.trim()) {
-    setStatus('No selection found.');
-    return;
-  }
+  if (selectionOnly && !sanitized.trim()) { setStatus('No selection found.'); return; }
 
   try {
     await navigator.clipboard.writeText(sanitized);
@@ -126,9 +124,8 @@ async function copySanitized({ selectionOnly }) {
 
 // Events
 el('addForm').addEventListener('submit', addRule);
-el('copyPage').addEventListener('click', () => copySanitized({ selectionOnly: false }));
-el('copySel').addEventListener('click', () => copySanitized({ selectionOnly: true }));
-el('openOptions').addEventListener('click', () => chrome.runtime.openOptionsPage());
+el('copyPage').addEventListener('click', () => copySanitized(false));
+el('copySel').addEventListener('click', () => copySanitized(true));
 
 // Init
 loadRules();
