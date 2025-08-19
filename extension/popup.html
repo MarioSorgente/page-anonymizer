@@ -22,7 +22,6 @@
           <label><input type="checkbox" id="wholeWord" checked /> Whole word</label>
           <label><input type="checkbox" id="caseSensitive" /> Case sensitive</label>
         </div>
-        <!-- prettier button -->
         <button type="submit" class="btn add">Add rule</button>
       </form>
     </section>
@@ -33,9 +32,10 @@
       <ul id="rulesList"></ul>
     </section>
 
+    <!-- Selection first (green), then Page (blue, slimmer) -->
     <section class="actions">
-      <button id="copyPage" class="btn primary">Anonymize &amp; Copy Page</button>
       <button id="copySel" class="btn success">Anonymize &amp; Copy Selection</button>
+      <button id="copyPage" class="btn primary slim">Anonymize &amp; Copy Page</button>
     </section>
 
     <div id="status" role="status" aria-live="polite"></div>
