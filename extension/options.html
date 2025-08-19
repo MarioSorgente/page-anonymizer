@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Page Anonymizer – Options</title>
+<link rel="stylesheet" href="options.css" />
+</head>
+<body>
+<main>
+<header>
+<img src="icons/32.png" width="24" height="24" alt="icon"/>
+<h1>Dictionary</h1>
+</header>
+
+
+<form id="addForm">
+<input id="pattern" placeholder="Pattern e.g. 4000eur or ^INV-\\d+" required />
+<input id="replacement" placeholder="Replacement e.g. amount in eur" required />
+<label><input type="checkbox" id="wholeWord" checked /> whole word</label>
+<label><input type="checkbox" id="caseSensitive" /> case sensitive</label>
+<label><input type="checkbox" id="isRegex" /> regex</label>
+<button type="submit">Add</button>
+</form>
+
+
+<table id="rulesTable">
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Replacement</th>
+<th>Flags</th>
+<th></th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+
+<section class="io">
+<button id="exportBtn">Export JSON</button>
+<label class="import">
+Import JSON
+<input type="file" id="importFile" accept="application/json" />
+</label>
+<p class="note">Data is stored locally in your browser. Nothing is sent anywhere.</p>
+</section>
+</main>
+<script src="options.js"></script>
+</body>
+</html>
