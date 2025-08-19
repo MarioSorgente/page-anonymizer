@@ -1,4 +1,5 @@
-\// ===== Page Anonymizer — Content Script (v0.2.0) =====
+// ===== Page Anonymizer — Content Script (v0.4.0, no-regex) =====
+// Note: Overlay is optional. Kept for future visual replacement use.
 
 let enabled = false;
 let observer = null;
@@ -11,10 +12,10 @@ const EXCLUDE_SELECTOR = [
   '.pa-anon'
 ].join(',');
 
-// Utilities
-function escapeRegExp(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+// ---- Utils (no-regex)
+function escapeRegExp(str) { return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function buildRegex(rule) {
-  const base = rule.isRegex ? rule.pattern : escapeRegExp(rule.pattern);
+  const base = escapeRegExp(rule.pattern || '');
   const wrapped = rule.wholeWord ? '\\b(?:' + base + ')\\b' : base;
   const flags = rule.caseSensitive ? 'g' : 'gi';
   return new RegExp(wrapped, flags);
@@ -23,15 +24,13 @@ function buildRegex(rule) {
 function replaceInTextNode(node, rule) {
   const re = buildRegex(rule);
   const text = node.nodeValue || '';
-  if (!text) return;
-  if (!re.test(text)) return;
+  if (!text || !re.test(text)) return;
   re.lastIndex = 0;
 
   const frag = document.createDocumentFragment();
   let last = 0, m;
   while ((m = re.exec(text)) !== null) {
-    const start = m.index;
-    const end = start + m[0].length;
+    const start = m.index, end = start + m[0].length;
     if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
     const span = document.createElement('span');
     span.className = 'pa-anon';
@@ -69,7 +68,7 @@ function clearAnonymization(root) {
 
 async function loadRules() {
   const { rules } = await chrome.storage.local.get({ rules: [] });
-  currentRules = (rules || []).slice().sort((a, b) => (b.pattern||'').length - (a.pattern||'').length);
+  currentRules = (rules || []).slice().sort((a, b) => (b.pattern || '').length - (a.pattern || '').length);
 }
 
 async function enable() {
@@ -102,7 +101,7 @@ function disable() {
 // Live updates when rules change
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes.rules) {
-    currentRules = (changes.rules.newValue || []).slice().sort((a, b) => (b.pattern||'').length - (a.pattern||'').length);
+    currentRules = (changes.rules.newValue || []).slice().sort((a, b) => (b.pattern || '').length - (a.pattern || '').length);
     if (enabled) {
       clearAnonymization(document.body);
       walkAndReplace(document.body, currentRules);
@@ -110,13 +109,13 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-// Messages
+// Messages (kept for future use)
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg?.type === 'PA_ENABLE') enable();
   if (msg?.type === 'PA_DISABLE') disable();
 });
 
-// Minimal styling (subtle, “Apple-like”)
+// Minimal styling
 const style = document.createElement('style');
 style.textContent = `
   .pa-anon{
