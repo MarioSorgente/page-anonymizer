@@ -1,35 +1,50 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Page Anonymizer</title>
-<link rel="stylesheet" href="popup.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Page Anonymizer</title>
+  <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-<main>
-<header>
-<img src="icons/32.png" width="24" height="24" alt="icon"/>
-<h1>Page Anonymizer</h1>
-</header>
+  <main>
+    <header>
+      <h1>Page Anonymizer</h1>
+      <label class="switch">
+        <input type="checkbox" id="toggle" />
+        <span class="slider"></span>
+      </label>
+    </header>
+    <p class="hint">Enable for this site, then insert words to anonymize.</p>
 
+    <section class="card">
+      <h2>Insert words to anonymize</h2>
+      <form id="addForm">
+        <input id="pattern" placeholder="Pattern (e.g. 4000eur or ^INV-\\d+)" required />
+        <input id="replacement" placeholder="Replacement (e.g. amount in eur)" required />
+        <div class="row small">
+          <label><input type="checkbox" id="wholeWord" checked /> Whole word</label>
+          <label><input type="checkbox" id="caseSensitive" /> Case sensitive</label>
+          <label><input type="checkbox" id="isRegex" /> Regex</label>
+        </div>
+        <button type="submit" class="primary">Add rule</button>
+      </form>
+    </section>
 
-<label class="row">
-<input type="checkbox" id="toggle" />
-<span>Enable on this site</span>
-</label>
+    <section class="card">
+      <h2>Your rules</h2>
+      <div id="emptyRules" class="empty">No rules yet.</div>
+      <ul id="rulesList"></ul>
+    </section>
 
+    <section class="actions">
+      <button id="copyPage" class="primary">Anonymize & Copy Page</button>
+      <button id="copySel">Anonymize & Copy Selection</button>
+      <a id="openOptions" href="#" class="link">Open full settings</a>
+    </section>
 
-<div class="buttons">
-<button id="copyPage">Anonymize & Copy Page</button>
-<button id="copySel">Anonymize & Copy Selection</button>
-</div>
-
-
-<nav>
-<a id="openOptions" href="#">Dictionary & Settings</a>
-</nav>
-</main>
-<script src="popup.js"></script>
+    <div id="status" role="status" aria-live="polite"></div>
+  </main>
+  <script src="popup.js"></script>
 </body>
 </html>
