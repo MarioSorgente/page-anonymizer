@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DataMask — safely anonymize your text before copying to AI tools</title>
+  <meta name="description" content="DataMask masks names, amounts and sensitive terms locally in your browser, then copies a clean version for AI tools. No tracking. No network calls." />
+  <meta name="theme-color" content="#0a84ff" />
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#0f172a; --muted:#475569; --border:#e2e8f0;
+      --accent:#0a84ff; --accent-press:#0067d8; --success:#10b981;
+      --card:#ffffff; --max:960px; --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font:16px/1.55 ui-sans-serif,-apple-system,system-ui,"Segoe UI",Roboto,Arial,sans-serif}
+    a{color:var(--accent);text-decoration:none}
+    header{max-width:var(--max);margin:40px auto 0;padding:0 20px;display:flex;align-items:center;gap:14px}
+    .brand{font-weight:800;letter-spacing:-.01em;font-size:20px}
+    .slogan{color:var(--muted);font-size:13px;margin-top:2px}
+    .logo-wrap{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:48px;height:48px;object-fit:cover;
+      border-radius:12px; /* keeps it neat even if the image is square */
+      background:#fff; /* ensures white behind transparent PNGs */
+      box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 1px 2px rgba(0,0,0,.06);
+      border:1px solid var(--border);
+    }
+    .hero{max-width:var(--max);margin:24px auto 0;padding:0 20px 10px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+    h1{margin:0 0 8px;font-size:26px;letter-spacing:-.02em}
+    p{margin:8px 0}
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .btn{appearance:none;border-radius:12px;padding:12px 16px;font-weight:700;border:1px solid transparent;cursor:pointer}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .btn.primary:hover{background:var(--accent-press);border-color:var(--accent-press)}
+    .btn.ghost{background:#fff;border-color:var(--border);color:#0f172a}
+    .btn.ghost:hover{background:#f8fafc}
+    .grid{max-width:var(--max);margin:18px auto;padding:0 20px;display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    .pill{display:inline-block;background:#f1f5f9;color:#0f172a;border-radius:999px;padding:4px 10px;font-size:12px;margin-right:6px}
+    footer{max-width:var(--max);margin:24px auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
+    .list{padding-left:18px;margin:8px 0}
+    .list li{margin:6px 0}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-wrap" aria-label="DataMask logo">
+      <!-- Your logo file: place at docs/logo.png -->
+      <img class="logo" src="logo.png" alt="DataMask logo" />
+      <div>
+        <div class="brand">DataMask</div>
+        <div class="slogan">safely anonymize your text before copying to AI tools</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="card">
+      <h1>Share context with AI — <span class="pill">not</span> your secrets.</h1>
+      <p>Mask names, IDs, and amounts on any page and copy a clean version. Everything runs locally in your browser — no tracking, no uploads.</p>
+      <div class="actions">
+        <!-- Replace # with your Chrome Web Store link when live -->
+        <a class="btn primary" href="#" target="_blank" rel="noopener">Add to Chrome</a>
+        <!-- Replace with your GitHub repo -->
+        <a class="btn ghost" href="#" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>The problem</h2>
+      <ul class="list">
+        <li>AI tools work best with real context — but raw copy-paste leaks sensitive data.</li>
+        <li>Manual redaction is slow and error-prone.</li>
+        <li>Privacy/compliance teams need on-device processing.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>The DataMask approach</h2>
+      <ul class="list">
+        <li><strong>Local-only:</strong> processing happens in your browser; no network calls.</li>
+        <li><strong>Your dictionary:</strong> define rules like <code>“ACME” → “customer name”</code>.</li>
+        <li><strong>Two actions:</strong> Anonymize &amp; Copy <em>Selection</em> or entire <em>Page</em>.</li>
+        <li><strong>Private by design:</strong> no analytics, no remote code, no telemetry.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p>Read our <a href="privacy.html">Privacy Policy</a>. All trademarks are property of their respective owners.</p>
+  </footer>
+</body>
+</html>
