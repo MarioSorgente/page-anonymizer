@@ -1,7 +1,7 @@
 // Page Anonymizer – background service worker (MV3)
 const sanitized = applyAll(text, rules || []);
 navigator.clipboard.writeText(sanitized).catch(() => {});
-},
+}
 args: [rules, selectionOnly]
 });
 }
