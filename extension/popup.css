@@ -98,12 +98,14 @@ label.chip input:checked::after {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 5px;                  /* smaller tick */
-  height: 2px;
-  border: 1.5px solid #fff;
-  border-top: 0;
-  border-right: 0;
-  transform: translate(-50%, -55%) rotate(-45deg);
+  width: 6px;                  /* check width  */
+  height: 3px;                 /* check height */
+  margin-left: -3px;           /* center horizontally */
+  margin-top: -1.5px;          /* center vertically   */
+  border-left: 2px solid #fff; /* simple ✓ made of two strokes */
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg);
+  box-sizing: border-box;
 }
 
 /* pill highlight when checked */
