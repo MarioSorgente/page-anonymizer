@@ -1,5 +1,5 @@
-// ===== Page Anonymizer — Content Script (v0.4.0, no-regex) =====
-// Note: Overlay is optional. Kept for future visual replacement use.
+// ===== DataMask — Content Script (v0.6.5) =====
+// Number-aware matching with thousands separators and optional decimals.
 
 let enabled = false;
 let observer = null;
@@ -12,13 +12,63 @@ const EXCLUDE_SELECTOR = [
   '.pa-anon'
 ].join(',');
 
-// ---- Utils (no-regex)
+// ---- Number-aware helpers
 function escapeRegExp(str) { return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+const SEP_CLASS = "[\\s,\\.\\u00A0\\u202F\\u2009\\u2007'’]";
+function isDigit(ch) { return ch >= '0' && ch <= '9'; }
+function isPatSep(ch) { return /[,\.\u00A0\u202F\u2009\u2007'’\s]/.test(ch); }
+function flexibleDigits(digits) { return digits.split('').join(`(?:${SEP_CLASS})?`); }
+
+function parseNumberToken(pat, i) {
+  let intDigits = '';
+  let fracDigits = null;
+  const n = pat.length;
+
+  while (i < n) {
+    const ch = pat[i];
+    if (isDigit(ch)) { intDigits += ch; i++; continue; }
+    if (isPatSep(ch)) { i++; continue; }
+    break;
+  }
+
+  if (i < n && (pat[i] === '.' || pat[i] === ',') && (i + 1 < n) && isDigit(pat[i + 1])) {
+    i++;
+    let f = '';
+    while (i < n && isDigit(pat[i])) { f += pat[i]; i++; }
+    fracDigits = f;
+  }
+
+  const intFlex = flexibleDigits(intDigits);
+  const decimalPart = (fracDigits !== null)
+    ? `(?:[.,]${fracDigits})`
+    : `(?:[.,]\\d{1,2})?`;
+
+  return { regexSrc: `${intFlex}${decimalPart}`, nextIndex: i };
+}
+
+function buildFlexibleBase(pat) {
+  let out = '';
+  for (let i = 0; i < pat.length; ) {
+    const ch = pat[i];
+    if (isDigit(ch)) {
+      const tok = parseNumberToken(pat, i);
+      out += tok.regexSrc;
+      i = tok.nextIndex;
+    } else {
+      out += escapeRegExp(ch);
+      i++;
+    }
+  }
+  return out;
+}
+
 function buildRegex(rule) {
-  const base = escapeRegExp(rule.pattern || '');
-  const wrapped = rule.wholeWord ? '\\b(?:' + base + ')\\b' : base;
+  const base = buildFlexibleBase(String(rule.pattern || ''));
+  const body = rule.wholeWord
+    ? `(?<![A-Za-z0-9_])(?:${base})(?![A-Za-z0-9_])`
+    : `(?:${base})`;
   const flags = rule.caseSensitive ? 'g' : 'gi';
-  return new RegExp(wrapped, flags);
+  return new RegExp(body, flags);
 }
 
 function replaceInTextNode(node, rule) {
@@ -98,7 +148,7 @@ function disable() {
   clearAnonymization(document.body);
 }
 
-// Live updates when rules change
+// Apply updates when rules change
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === 'local' && changes.rules) {
     currentRules = (changes.rules.newValue || []).slice().sort((a, b) => (b.pattern || '').length - (a.pattern || '').length);
@@ -115,7 +165,7 @@ chrome.runtime.onMessage.addListener((msg) => {
   if (msg?.type === 'PA_DISABLE') disable();
 });
 
-// Minimal styling
+// Minimal styling for inline replacements
 const style = document.createElement('style');
 style.textContent = `
   .pa-anon{
