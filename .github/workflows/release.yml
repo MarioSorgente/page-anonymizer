@@ -1,19 +1,26 @@
-name: Build & Attach ZIP
+name: Package Chrome Extension
 on:
-push:
-tags:
-- 'v*.*.*'
+  workflow_dispatch:
+  push:
+    paths:
+      - 'extension/**'
+      - '.github/workflows/package.yml'
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- uses: actions/checkout@v4
-- name: Zip extension
-run: |
-cd extension
-zip -r ../page-anonymizer-${GITHUB_REF_NAME}.zip .
-- name: Upload artifact
-uses: actions/upload-artifact@v4
-with:
-name: page-anonymizer-${{ github.ref_name }}.zip
-path: page-anonymizer-${{ github.ref_name }}.zip
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read version from manifest
+        id: v
+        run: |
+          VER=$(jq -r '.version' extension/manifest.json)
+          echo "ver=$VER" >> $GITHUB_OUTPUT
+      - name: Zip extension folder
+        run: |
+          cd extension
+          zip -r ../datamask-v${{ steps.v.outputs.ver }}.zip . -x "*.DS_Store" -x "__MACOSX"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: datamask-v${{ steps.v.outputs.ver }}.zip
+          path: datamask-v${{ steps.v.outputs.ver }}.zip
