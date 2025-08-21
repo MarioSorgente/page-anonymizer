@@ -1,5 +1,4 @@
-// ===== DataMask — Popup (v0.6.5) =====
-// Unique rules enforced. Number-aware matching supports thousands separators AND decimals.
+// ===== DataMask — Popup (guard for chrome:// pages + number-aware matching) =====
 
 const el = (id) => document.getElementById(id);
 const $status = el('status');
@@ -13,9 +12,13 @@ function setStatus(msg) {
 function pill(text) { return `<span class="pill">${text}</span>`; }
 function esc(s='') { return s.replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+// ---- active tab + restricted check
 async function activeTab() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   return tab || null;
+}
+function isRestrictedUrl(url = '') {
+  return /^(chrome|chrome-extension|edge|devtools|about|view-source):/i.test(url);
 }
 
 async function loadRules() {
@@ -85,51 +88,32 @@ async function addRule(e) {
   setStatus('Rule added.');
 }
 
-// ===== Number-aware regex builder (runs in page) =====
+// ===== Number-aware regex builder (thousands + decimals) =====
 function pageFuncFactory() {
   return (rulesArg, selectionOnlyArg) => {
     function escapeRegExp(str) { return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-    // thousands separators in the wild: normal/nbspace/narrow/thin spaces, comma, dot, apostrophe
-    const SEP_CLASS = "[\\s,\\.\\u00A0\\u202F\\u2009\\u2007'’]";
-
+    const SEP_CLASS = "[\\s,\\.\\u00A0\\u202F\\u2009\\u2007'’]"; // spaces, comma, dot, apostrophe
     function isDigit(ch) { return ch >= '0' && ch <= '9'; }
     function isPatSep(ch) { return /[,\.\u00A0\u202F\u2009\u2007'’\s]/.test(ch); }
+    function flexibleDigits(digits) { return digits.split('').join(`(?:${SEP_CLASS})?`); }
 
-    // Insert optional separators between every adjacent digit
-    function flexibleDigits(digits) {
-      return digits.split('').join(`(?:${SEP_CLASS})?`);
-    }
-
-    // Parse one numeric token starting at i; supports separators in the pattern itself.
     function parseNumberToken(pat, i) {
-      let intDigits = '';
-      let fracDigits = null;
+      let intDigits = '', fracDigits = null;
       const n = pat.length;
-
-      // collect integer digits, skipping in-pattern thousands separators
       while (i < n) {
         const ch = pat[i];
         if (isDigit(ch)) { intDigits += ch; i++; continue; }
-        if (isPatSep(ch)) { i++; continue; } // skip commas/dots/spaces/apostrophes inside the pattern
+        if (isPatSep(ch)) { i++; continue; }
         break;
       }
-
-      // optional decimal in the pattern ('.' or ',') followed by digits
       if (i < n && (pat[i] === '.' || pat[i] === ',') && (i + 1 < n) && isDigit(pat[i + 1])) {
-        i++; // skip decimal mark in pattern
+        i++;
         let f = '';
         while (i < n && isDigit(pat[i])) { f += pat[i]; i++; }
-        fracDigits = f; // exact fraction from pattern
+        fracDigits = f;
       }
-
-      // Build regex for this numeric token
       const intFlex = flexibleDigits(intDigits);
-      // If the user specified decimals in the rule, require them (but accept '.' or ',')
-      // If not, allow an optional decimal part (common for amounts), usually 1–2 digits.
-      const decimalPart = (fracDigits !== null)
-        ? `(?:[.,]${fracDigits})`
-        : `(?:[.,]\\d{1,2})?`;
-
+      const decimalPart = (fracDigits !== null) ? `(?:[.,]${fracDigits})` : `(?:[.,]\\d{1,2})?`;
       return { regexSrc: `${intFlex}${decimalPart}`, nextIndex: i };
     }
 
@@ -137,14 +121,8 @@ function pageFuncFactory() {
       let out = '';
       for (let i = 0; i < pat.length; ) {
         const ch = pat[i];
-        if (isDigit(ch)) {
-          const tok = parseNumberToken(pat, i);
-          out += tok.regexSrc;
-          i = tok.nextIndex;
-        } else {
-          out += escapeRegExp(ch);
-          i++;
-        }
+        if (isDigit(ch)) { const t = parseNumberToken(pat, i); out += t.regexSrc; i = t.nextIndex; }
+        else { out += escapeRegExp(ch); i++; }
       }
       return out;
     }
@@ -175,14 +153,28 @@ function pageFuncFactory() {
 }
 
 async function copySanitized(selectionOnly) {
-  const { rules } = await chrome.storage.local.get({ rules: [] });
   const tab = await activeTab();
-  if (!tab) return;
-  const results = await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: pageFuncFactory(),
-    args: [Array.isArray(rules) ? rules : [], !!selectionOnly]
-  });
+  if (!tab) { setStatus('No active tab.'); return; }
+  if (isRestrictedUrl(tab.url)) {
+    setStatus('Cannot run on chrome:// or internal pages. Open a normal website.');
+    return;
+  }
+
+  const { rules } = await chrome.storage.local.get({ rules: [] });
+
+  let results;
+  try {
+    results = await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: pageFuncFactory(),
+      args: [Array.isArray(rules) ? rules : [], !!selectionOnly]
+    });
+  } catch (err) {
+    console.error(err);
+    setStatus('Cannot access this page. Try another tab.');
+    return;
+  }
+
   const sanitized = (results && results[0] && results[0].result) || '';
   if (selectionOnly && !sanitized.trim()) { setStatus('No selection found.'); return; }
 
@@ -190,13 +182,18 @@ async function copySanitized(selectionOnly) {
     await navigator.clipboard.writeText(sanitized);
     setStatus(selectionOnly ? 'Selection copied (anonymized).' : 'Page copied (anonymized).');
   } catch {
-    const ta = document.createElement('textarea');
-    ta.value = sanitized;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    ta.remove();
-    setStatus(selectionOnly ? 'Selection copied (anonymized).' : 'Page copied (anonymized).');
+    // Fallback
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = sanitized;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      setStatus(selectionOnly ? 'Selection copied (anonymized).' : 'Page copied (anonymized).');
+    } catch {
+      setStatus('Clipboard blocked by this page.');
+    }
   }
 }
 
