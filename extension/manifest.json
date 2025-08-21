@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "DataMask — safely anonymize your text before copying to AI tools",
-  "version": "0.6.3",
+  "version": "0.8.3",
   "description": "Anonymize selected words on any page and copy a sanitized version to your AI tool. All processing is local.",
   "action": {
     "default_title": "DataMask",
