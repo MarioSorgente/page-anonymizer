@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DataMask — safely anonymize your text before copying to AI tools</title>
-  <meta name="description" content="DataMask masks names, amounts and sensitive terms locally in your browser, then copies a clean version for AI tools. No tracking. No network calls." />
+  <meta name="description" content="Mask names, IDs, and amounts on any page and copy a clean version to AI tools. Everything runs locally in your browser — no tracking, no uploads." />
   <meta name="theme-color" content="#0a84ff" />
   <link rel="icon" type="image/png" sizes="16x16" href="16.png" />
   <style>
@@ -25,14 +25,12 @@
     .btn{appearance:none;border-radius:12px;padding:12px 16px;font-weight:700;border:1px solid transparent;cursor:pointer;display:inline-block}
     .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
     .btn.primary:hover{background:var(--accent-press);border-color:var(--accent-press)}
-    .btn[aria-disabled="true"]{opacity:.6;cursor:not-allowed;pointer-events:none}
     .grid{max-width:var(--max);margin:18px auto;padding:0 20px;display:grid;grid-template-columns:1fr;gap:14px}
     @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
     .pill{display:inline-block;background:#f1f5f9;color:#0f172a;border-radius:999px;padding:4px 10px;font-size:12px;margin-right:6px}
     footer{max-width:var(--max);margin:24px auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
     .list{padding-left:18px;margin:8px 0}
     .list li{margin:6px 0}
-    .mini{font-size:12px;color:var(--muted)}
   </style>
 </head>
 <body>
@@ -51,10 +49,12 @@
       <h1>Share context with AI — <span class="pill">not</span> your secrets.</h1>
       <p>Mask names, IDs, and amounts on any page and copy a clean version. Everything runs locally in your browser — no tracking, no uploads.</p>
       <div class="actions">
-        <!-- Replace # with your Chrome Web Store link when live -->
-        <a class="btn primary" href="#" aria-disabled="true" title="Coming soon">Add to Chrome</a>
+        <a class="btn primary"
+           href="https://chromewebstore.google.com/detail/datamask-%E2%80%94-safely-anonymi/ballbfhhjogdpccgdofkdfoidhmcpckp"
+           target="_blank" rel="noopener">
+          Add to Chrome
+        </a>
       </div>
-      <p class="mini">Not live yet — Chrome Web Store link coming soon.</p>
     </div>
   </section>
 
